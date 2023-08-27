@@ -17,6 +17,38 @@ function setShadowSettings(ctx) {
     ctx.shadowBlur = 0;
 }
 
+function applyShadowEffect(ctx) {
+    ctx.shadowColor = "#000000";
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
+    ctx.shadowBlur = 10;
+}
+
+function extractLines(words, currentLine, ctx, textWidth, lines) {
+    for (let i = 1; i < words.length; i++) {
+        const testLine = `${currentLine} ${words[i]}`;
+        const testWidth = ctx.measureText(testLine).width;
+
+        if (testWidth <= textWidth) {
+            currentLine = testLine;
+        } else {
+            lines.push(currentLine);
+            currentLine = words[i];
+        }
+    }
+    lines.push(currentLine);
+}
+
+function drawEachLine(lines, textX, textY, lineHeight, ctx) {
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const textXPosition = textX;
+        const textYPosition = textY + i * lineHeight;
+
+        ctx.fillText(line, textXPosition, textYPosition);
+    }
+}
+
 async function writeShortNameDesignation(ctx, text) {
 
     // Text specifications
@@ -30,10 +62,7 @@ async function writeShortNameDesignation(ctx, text) {
     const textAlign = 'left';
 
     // Apply drop shadow effect
-    ctx.shadowColor = "#000000";
-    ctx.shadowOffsetX = 5;
-    ctx.shadowOffsetY = 5;
-    ctx.shadowBlur = 10;
+    applyShadowEffect(ctx);
 
     // Set text properties
     ctx.font = `${fontWeight} ${fontSize}px Arial, sans-serif`;
@@ -46,29 +75,8 @@ async function writeShortNameDesignation(ctx, text) {
     let lines = [];
     let currentLine = words[0];
 
-    for (let i = 1; i < words.length; i++) {
-        const testLine = `${currentLine} ${words[i]}`;
-        const testWidth = ctx.measureText(testLine).width;
-
-        if (testWidth <= textWidth) {
-            currentLine = testLine;
-        } else {
-            lines.push(currentLine);
-            currentLine = words[i];
-        }
-    }
-    lines.push(currentLine);
-
-    // Draw each line of text
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        const textXPosition = textX;
-        const textYPosition = textY + i * lineHeight;
-
-        ctx.fillText(line, textXPosition, textYPosition);
-    }
-
-    // Remove shadow settings for other drawings
+    extractLines(words, currentLine, ctx, textWidth, lines);
+    drawEachLine(lines, textX, textY, lineHeight, ctx);
     setShadowSettings(ctx);
 }
 
@@ -82,10 +90,7 @@ async function writeShortName(ctx, shortName) {
     const textAlign = 'left';
 
     // Apply drop shadow effect
-    ctx.shadowColor = "#000000";
-    ctx.shadowOffsetX = 5;
-    ctx.shadowOffsetY = 5;
-    ctx.shadowBlur = 10;
+    applyShadowEffect(ctx);
 
     // Set text properties
     ctx.font = `${fontSize}px Arial, sans-serif`;
@@ -98,18 +103,7 @@ async function writeShortName(ctx, shortName) {
     let lines = [];
     let currentLine = words[0];
 
-    for (let i = 1; i < words.length; i++) {
-        const testLine = `${currentLine} ${words[i]}`;
-        const testWidth = ctx.measureText(testLine).width;
-
-        if (testWidth <= textWidth) {
-            currentLine = testLine;
-        } else {
-            lines.push(currentLine);
-            currentLine = words[i];
-        }
-    }
-    lines.push(currentLine);
+    extractLines(words, currentLine, ctx, textWidth, lines);
 
     // Calculate total text height
     const totalTextHeight = lines.length * fontSize;
@@ -140,30 +134,8 @@ async function writeAboutMe(aboutText, ctx) {
     let lines = [];
     let currentLine = words[0];
 
-    for (let i = 1; i < words.length; i++) {
-        const testLine = `${currentLine} ${words[i]}`;
-        const testWidth = ctx.measureText(testLine).width;
-
-        if (testWidth <= textWidth) {
-            currentLine = testLine;
-        } else {
-            lines.push(currentLine);
-            currentLine = words[i];
-        }
-    }
-    lines.push(currentLine);
-
-    // Calculate total text height
-    const totalTextHeight = lines.length * lineHeight;
-
-    // Draw each line of about text
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        const textXPosition = textX;
-        const textYPosition = textY + i * lineHeight;
-
-        ctx.fillText(line, textXPosition, textYPosition);
-    }
+    extractLines(words, currentLine, ctx, textWidth, lines);
+    drawEachLine(lines, textX, textY, lineHeight, ctx);
 }
 
 async function setImageOnTemplate(ctx, overlayImagePath) {
@@ -191,10 +163,7 @@ async function setImageOnTemplate(ctx, overlayImagePath) {
     ctx.clip();
 
     // Apply drop shadow effect
-    ctx.shadowColor = "#000000";
-    ctx.shadowOffsetX = 5;
-    ctx.shadowOffsetY = 5;
-    ctx.shadowBlur = 10;
+    applyShadowEffect(ctx);
 
     const grayscaleOverlay = createBlackAndWhiteImage(overlayImage);
 
@@ -250,10 +219,7 @@ async function writeLongName(ctx, longName) {
     const textAlign = 'left';
 
     // Apply drop shadow effect
-    ctx.shadowColor = "#000000";
-    ctx.shadowOffsetX = 5;
-    ctx.shadowOffsetY = 5;
-    ctx.shadowBlur = 10;
+    applyShadowEffect(ctx);
 
     // Set longName properties
     ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}, sans-serif`;
@@ -266,30 +232,8 @@ async function writeLongName(ctx, longName) {
     let lines = [];
     let currentLine = words[0];
 
-    for (let i = 1; i < words.length; i++) {
-        const testLine = `${currentLine} ${words[i]}`;
-        const testWidth = ctx.measureText(testLine).width;
-
-        if (testWidth <= textWidth) {
-            currentLine = testLine;
-        } else {
-            lines.push(currentLine);
-            currentLine = words[i];
-        }
-    }
-    lines.push(currentLine);
-
-    // Calculate total longName height
-    const totalTextHeight = lines.length * lineHeight;
-
-    // Draw each line of longName
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        const textXPosition = textX;
-        const textYPosition = textY + i * lineHeight;
-
-        ctx.fillText(line, textXPosition, textYPosition);
-    }
+    extractLines(words, currentLine, ctx, textWidth, lines);
+    drawEachLine(lines, textX, textY, lineHeight, ctx);
 
     // Remove shadow settings for other drawings
     setShadowSettings(ctx);
@@ -309,10 +253,7 @@ async function writeLongNameDesignation(ctx, designation) {
     const textColor = '#FFFFFF';
 
     // Apply drop shadow effect
-    ctx.shadowColor = "#000000";
-    ctx.shadowOffsetX = 5;
-    ctx.shadowOffsetY = 5;
-    ctx.shadowBlur = 10;
+    applyShadowEffect(ctx);
 
     // Set designation properties
     ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}, sans-serif`;
@@ -325,27 +266,8 @@ async function writeLongNameDesignation(ctx, designation) {
     let lines = [];
     let currentLine = words[0];
 
-    for (let i = 1; i < words.length; i++) {
-        const testLine = `${currentLine} ${words[i]}`;
-        const testWidth = ctx.measureText(testLine).width;
-
-        if (testWidth <= textWidth) {
-            currentLine = testLine;
-        } else {
-            lines.push(currentLine);
-            currentLine = words[i];
-        }
-    }
-    lines.push(currentLine);
-
-    // Draw each line of designation
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        const textXPosition = textX;
-        const textYPosition = textY + i * lineHeight;
-
-        ctx.fillText(line, textXPosition, textYPosition);
-    }
+    extractLines(words, currentLine, ctx, textWidth, lines);
+    drawEachLine(lines, textX, textY, lineHeight, ctx);
 
     // Remove shadow settings for other drawings
     setShadowSettings(ctx);
@@ -361,27 +283,10 @@ function detailWriter(field, ctx, lineHeight, textSpecifications) {
     let lines = [];
     let currentLine = words[0];
 
-    for (let i = 1; i < words.length; i++) {
-        const testLine = `${currentLine} ${words[i]}`;
-        const testWidth = ctx.measureText(testLine).width;
-
-        if (testWidth <= textWidth) {
-            currentLine = testLine;
-        } else {
-            lines.push(currentLine);
-            currentLine = words[i];
-        }
-    }
-    lines.push(currentLine);
+    extractLines(words, currentLine, ctx, textWidth, lines);
 
     // Draw each line of field
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        const textXPosition = textX;
-        const textYPosition = textY + i * lineHeight;
-
-        ctx.fillText(line, textXPosition, textYPosition);
-    }
+    drawEachLine(lines, textX, textY, lineHeight, ctx);
 }
 
 function setNameAndDesignation(name, ctx, designation) {
