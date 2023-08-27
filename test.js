@@ -13,7 +13,7 @@ const infoMap = new Map([
 async function writeShortNameDesignation(ctx, text) {
 
     // Text specifications
-    const textX = 52;
+    const textX = 83;
     const textY = 332;
     const textWidth = 250;
     const textColor = '#FFFFFF';
@@ -75,6 +75,7 @@ async function writeShortName(ctx, shortName) {
     const textHeight = 70;
     const textColor = '#FFFFFF';
     const fontSize = 42;
+    const textAlign = 'left';
 
     // Apply drop shadow effect
     ctx.shadowColor = "#000000";
@@ -86,6 +87,7 @@ async function writeShortName(ctx, shortName) {
     ctx.font = `${fontSize}px Arial, sans-serif`;
     ctx.fillStyle = textColor;
     ctx.textBaseline = 'top';
+    ctx.textAlign = textAlign;
 
     // Split short name into multiple lines if needed
     const words = shortName.split(' ');
@@ -410,6 +412,7 @@ async function  setDetails(name,designation,aboutText,overlayImagePath , templat
     }
 
     if (name.length <= 14) {
+        name =  name + ' '.repeat(13 - name.length);
         writeShortName(ctx, name);
         writeShortNameDesignation(ctx, designation);
     } else {
@@ -451,9 +454,9 @@ async function  setDetails(name,designation,aboutText,overlayImagePath , templat
 
 
 const aboutText = "You are two steps away from delighting your visitors with a perfect visual experience. The following steps will help you get the most out of ImageKit.io’s image optimization and transformation capabilities.";
-const firstName = 'Nikhil';
-const lastName = 'Matta';
-const designation = 'Software Engineer';
+const firstName = 'Rohan';
+const lastName = '';
+const designation = 'Engineer';
 const company = 'Timechain Labs';
 const overlay_file_name = 'faheem__.jpeg';
 const template_file = 'For Long Name.png';
