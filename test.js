@@ -10,6 +10,13 @@ const infoMap = new Map([
     ['AreaOfInterest', [460,921,300]]
 ]);
 
+function setShadowSettings(ctx) {
+    ctx.shadowColor = "transparent";
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.shadowBlur = 0;
+}
+
 async function writeShortNameDesignation(ctx, text) {
 
     // Text specifications
@@ -62,10 +69,7 @@ async function writeShortNameDesignation(ctx, text) {
     }
 
     // Remove shadow settings for other drawings
-    ctx.shadowColor = "transparent";
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
-    ctx.shadowBlur = 0;
+    setShadowSettings(ctx);
 }
 
 async function writeShortName(ctx, shortName) {
@@ -123,10 +127,7 @@ async function writeShortName(ctx, shortName) {
     }
 
     // Remove shadow settings for other drawings
-    ctx.shadowColor = "transparent";
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
-    ctx.shadowBlur = 0;
+    setShadowSettings(ctx);
 }
 
 async function writeAboutMe(aboutText, ctx) {
@@ -209,10 +210,7 @@ async function setImageOnTemplate(ctx, overlayImagePath) {
     // ctx.drawImage(overlayImage, imageX, imageY, imageWidth, imageHeight);
 
     // Remove shadow settings for other drawings
-    ctx.shadowColor = "transparent";
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
-    ctx.shadowBlur = 0;
+    setShadowSettings(ctx);
 }
 
 function createBlackAndWhiteImage(sourceImage) {
@@ -294,10 +292,7 @@ async function writeLongName(ctx, longName) {
     }
 
     // Remove shadow settings for other drawings
-    ctx.shadowColor = "transparent";
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
-    ctx.shadowBlur = 0;
+    setShadowSettings(ctx);
 }
 
 async function writeLongNameDesignation(ctx, designation) {
@@ -306,12 +301,10 @@ async function writeLongNameDesignation(ctx, designation) {
     const textX = 62;
     const textY = 332;
     const textWidth = 279.17;
-    const textHeight = 58;
     const fontFamily = 'Barlow';
     const fontSize = 24;
     const fontWeight = '400';
     const lineHeight = 29;
-    const letterSpacing = -0.02;
     const textAlign = 'left';
     const textColor = '#FFFFFF';
 
@@ -355,10 +348,7 @@ async function writeLongNameDesignation(ctx, designation) {
     }
 
     // Remove shadow settings for other drawings
-    ctx.shadowColor = "transparent";
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
-    ctx.shadowBlur = 0;
+    setShadowSettings(ctx);
 }
 
 function detailWriter(field, ctx, lineHeight, textSpecifications) {
@@ -394,6 +384,24 @@ function detailWriter(field, ctx, lineHeight, textSpecifications) {
     }
 }
 
+function setNameAndDesignation(name, ctx, designation) {
+
+    if (designation.length <= 21) {
+        designation =  designation + ',' + ' '.repeat(22 - designation.length) + company;
+    } else {
+        designation =  designation + ',';
+    }
+
+    if (name.length <= 14) {
+        name = name + ' '.repeat(13 - name.length);
+        writeShortName(ctx, name);
+        writeShortNameDesignation(ctx, designation);
+    } else {
+        writeLongName(ctx, name);
+        writeLongNameDesignation(ctx, designation);
+    }
+}
+
 async function  setDetails(name,designation,aboutText,overlayImagePath , templateImagePath, organizationName, outputPath, emailId, webUrl, phone, location, areaOfInterest){
     const canvasWidth = 736;
     const canvasHeight = 1104;
@@ -405,20 +413,7 @@ async function  setDetails(name,designation,aboutText,overlayImagePath , templat
 
     ctx.drawImage(templateImage, 0, 0);
 
-    if (designation.length <= 21) {
-        designation =  designation + ',' + ' '.repeat(22 - designation.length) + company;
-    } else {
-        designation =  designation + ',';
-    }
-
-    if (name.length <= 14) {
-        name =  name + ' '.repeat(13 - name.length);
-        writeShortName(ctx, name);
-        writeShortNameDesignation(ctx, designation);
-    } else {
-        writeLongName(ctx, name);
-        writeLongNameDesignation(ctx, designation);
-    }
+    setNameAndDesignation(name, ctx, designation);
 
     const fontFamily = 'Barlow';
     const fontSize = 22;
@@ -454,8 +449,8 @@ async function  setDetails(name,designation,aboutText,overlayImagePath , templat
 
 
 const aboutText = "You are two steps away from delighting your visitors with a perfect visual experience. The following steps will help you get the most out of ImageKit.io’s image optimization and transformation capabilities.";
-const firstName = 'Rohan';
-const lastName = '';
+const firstName = 'Ramanun';
+const lastName = 'Bharami';
 const designation = 'Engineer';
 const company = 'Timechain Labs';
 const overlay_file_name = 'faheem__.jpeg';
