@@ -207,6 +207,16 @@ async function writeAboutMe(aboutText, ctx) {
     const textY = 612;
     const textWidth = 634;
     const lineHeight = 34;
+    const fontSize = 28;
+    const fontWeight = '400';
+    const textAlign = 'left';
+    const textColor = '#112D44';
+
+    // Set text properties
+    ctx.font = `${fontWeight} ${fontSize}px Barlow, sans-serif`;
+    ctx.fillStyle = textColor;
+    ctx.textBaseline = 'top';
+    ctx.textAlign = textAlign;
 
     const words = aboutText.split(' ');
     let lines = [];
@@ -280,6 +290,7 @@ async function setDetails(name, designation, aboutText, overlayImagePath, templa
     ctx.drawImage(templateImage, 0, 0);
 
     setNameAndDesignation(name, ctx, designation);
+    writeAboutMe(aboutText, ctx);
 
     const fontFamily = 'Barlow';
     const fontSize = 22;
@@ -295,7 +306,7 @@ async function setDetails(name, designation, aboutText, overlayImagePath, templa
     ctx.textAlign = textAlign;
 
     setImageOnTemplate(ctx, overlayImagePath);
-    writeAboutMe(aboutText, ctx);
+
     detailWriter(emailId, ctx, lineHeight, infoMap.get('Email'));
     detailWriter(organizationName, ctx, lineHeight, infoMap.get('Organization'));
     detailWriter(webUrl, ctx, lineHeight, infoMap.get('Website'));
@@ -312,20 +323,20 @@ async function setDetails(name, designation, aboutText, overlayImagePath, templa
 }
 
 
-const aboutText = "You are two steps away from delighting your visitors with a perfect visual experience. The following steps will help you get the most out of ImageKit.io’s image optimization and transformation capabilities.";
-const firstName = 'RamRamRamo';
-const lastName = '';
-const designation = 'Engineer';
+const aboutText = "As a Blockchain Engineer with a background in computer science, I excel at problem-solving and continuously learn new technologies and techniques.";
+const firstName = 'Shubham';
+const lastName = 'Gautam';
+const designation = 'Blockchain Lead';
 const company = 'Timechain Labs';
-const overlay_file_name = 'faheem__.jpeg';
+const overlay_file_name = '1666547947414.jpg';
 const template_file = 'For Long Name.png';
 const output_file_name = 'output_with_details.png';
-const email = 'fnaseem010@gmail.com';
-const web_url = 'faheem.io';
+const email = 'shubham@timechainlab.io';
+const web_url = 'timechainlabs.io';
 const phoneNo = '+91XXXXXXXX90';
-const location = 'Delhi, India';
-const areaOfInterest = 'Blockchain';
-const organization = 'Hello Grp!'
+const location = 'Chandigarh, India';
+const areaOfInterest = 'Blockchain R&D';
+const organization = 'Timechain Labs'
 
 // let aboutText = "You are two steps away from delighting your visitors with a perfect visual experience. The following steps will help you get the most out of ImageKit.io’s image optimization and transformation capabilities.";
 setDetails(firstName + ' ' + lastName, designation, aboutText, overlay_file_name, template_file, organization, output_file_name, email, web_url, phoneNo, location, areaOfInterest).then(r => console.log(r))
